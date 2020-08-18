@@ -7,6 +7,6 @@ from djgentelella.forms.forms import GTFormSet
 
 def add_formset(request):
     formset = formset_factory(PersonForm, formset=GTFormSet,
-                              extra=2, max_num=1)
+                              extra=0, max_num=2)
 
-    return render(request, 'formset.html', {'formset': formset(prefix='pref')})
+    return render(request, 'formset.html', {'formset': formset(prefix='person')})

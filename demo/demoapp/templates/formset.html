@@ -2,14 +2,47 @@
 
 {% block content %}
 
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12">
-        {{ formset.as_horizontal }}
+<form method="post" id="form-test">
+    {% csrf_token %}
+    {{ formset.management_form }}
+   {{formset.template}}
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12">
+            <div hidden id="form-container">
+                <input type="text" id="model-prefix" value="{{formset.prefix}}">
+                {{formset.empty_form}}
+            </div>
+
+            {% for form in formset %}
+            <div id="{{form.prefix}}">
+                {{ form.as_horizontal }}
+                <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete form</a>
+                <input type="text" value="{{form.prefix}}">
+            </div>
+               
+
+            <hr>
+            {% endfor %}
+
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+            <a id="add-form" class="btn btn-success">Add form</a>
+        </div>
+
+        
+
     </div>
-</div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+
+
+
+
+</form>
 
 {% endblock %}
 
 {% block js %}
-    {{ formset.media }}
+{{ formset.media }}
 {% endblock %}
