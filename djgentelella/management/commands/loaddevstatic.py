@@ -27,7 +27,7 @@ class Command(BaseCommand):
             print('No static folder found')
             exit(1)
 
-        basepath = result.replace('gentelella/css/custom.css', 'vendors/')
+        basepath = result.replace('gentelella\\css\\custom.css', 'vendors\\') #If you are using LINUX change \\ for /
 
 
         libs = {
