@@ -1,55 +1,58 @@
 (() => {
+
     const prefix = document.querySelector("#model-prefix").value;
-    console.log(prefix);
-    let INITIAL_FORMS = parseInt(document.querySelector(`#id_${prefix}-INITIAL_FORMS`).value);
-    const total_forms_input = document.querySelector(`#id_${prefix}-TOTAL_FORMS`);
-    const addBtn = document.querySelector("#add-form");
-    const formContainer = $("#form-container");
-    let formInputs = formContainer.find("input");
-    const form_test = document.querySelector("#form-test");
+    const formset_list = document.querySelector("#formset-list");
+    const formset_template = document.querySelector("#formset-template").innerHTML;
+    const add_button = document.querySelector("#add-form");
 
+    // Control variables
+    let [TOTAL_FORMS, INITIAL_FORMS, MIN_NUM_FORMS, MAX_NUM_FORMS] = $("#formset-management").find('input');
+    console.log(TOTAL_FORMS);
+    console.log(TOTAL_FORMS.value);
 
+    // ------------------------ FUNCTIONS ------------------------
+    //TODO : take into account the forms that already exist on the page (now it is only for situations where there are no forms)
+    // const get_next_form_number = (current_number) => {
+    //     next_number = 0;
+    //     if (current_number > 0) {
+    //         next_number = parseInt(current_number) + 1;
+    //     }
+    //     return next_number;
+    // };
 
-    // for (const iterator of formInputs) {
+    const create_new_form = (next_form_number) => {
+        const new_form = document.createElement('div');
+        const delete_button = create_delete_button();
+        new_form.setAttribute("id", `${prefix}-${next_form_number}`);
+        new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
+        new_form.appendChild(delete_button);
+        new_form.innerHTML += "<hr>";
+        formset_list.append(new_form);
+    };
 
-    //     iterator.id = iterator.id.replace('__prefix__', MAX_FORMS);
-    //     iterator.name = iterator.name.replace('__prefix__', MAX_FORMS);
-    //     console.log(iterator);
-    // }
-
-    //     <div id="{{form.prefix}}">
-    //     {{ form.as_horizontal }}
-    //     <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete form</a>
-    //     <input type="text" value="{{form.prefix}}">
-    // </div>
-
-
-    addBtn.addEventListener('click', () => {
-        console.log(INITIAL_FORMS);
-        const div = document.createElement('div');
-        div.id = `div-${INITIAL_FORMS}`;
-
-        const deleteBtn = document.createElement('BUTTON');
-        deleteBtn.id = `btn-delete-${INITIAL_FORMS}`;
+    const create_delete_button = () => {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.id = `btn-delete-${TOTAL_FORMS.value}`;
         deleteBtn.setAttribute("class", "btn btn-danger");
         deleteBtn.setAttribute("name", "deleteBtn");
         deleteBtn.textContent = 'Delete form';
+        return deleteBtn;
+    };
 
-        for (const input of formInputs) {
-            const new_input = input.cloneNode(true);
-
-            new_input.id = new_input.id.replace('__prefix__', INITIAL_FORMS);
-            new_input.name = new_input.name.replace('__prefix__', INITIAL_FORMS);
-            const hr = document.createElement('hr');
-            div.appendChild(new_input);
-            div.appendChild(hr);
+    const update_management_information = (operation) => {
+        if (operation == 'add') {
+            TOTAL_FORMS.value = parseInt(TOTAL_FORMS.value) + 1;
         }
-        console.log(deleteBtn);
-        form_test.appendChild(deleteBtn);
-        console.log(div);
-        form_test.appendChild(div);
-        INITIAL_FORMS += 1;
-        total_forms_input.value = INITIAL_FORMS;
+        else if (operation == 'delete') {
+            // TODO
+        }
+    };
+
+    // ------------------------ EVENTS ------------------------
+
+    add_button.addEventListener('click', () => {
+        create_new_form(TOTAL_FORMS.value);
+        update_management_information('add');
     });
 
     /*document.getElementsByName("deleteBtn").addEventListener("click", () => {

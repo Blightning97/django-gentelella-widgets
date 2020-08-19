@@ -4,33 +4,37 @@
 
 <form method="post" id="form-test">
     {% csrf_token %}
-    {{ formset.management_form }}
-   {{formset.template}}
+
+    <input type="text" id="model-prefix" value="{{formset.prefix}}" hidden>
+    <div hidden id="formset-template">
+        {{formset.empty_form.as_horizontal}}
+    </div>
+
     <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-12">
-            <div hidden id="form-container">
-                <input type="text" id="model-prefix" value="{{formset.prefix}}">
-                {{formset.empty_form}}
+        <div id="formset-management">
+            {{ formset.management_form }}
+        </div>
+        
+
+        <div class="col-xs-12 col-sm-12 col-md-12 container">
+            <div id="formset-list">
+
             </div>
 
-            {% for form in formset %}
-            <div id="{{form.prefix}}">
-                {{ form.as_horizontal }}
-                <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete form</a>
-                <input type="text" value="{{form.prefix}}">
-            </div>
-               
-
-            <hr>
-            {% endfor %}
-
+            <!-- 
+                {% for form in formset %}
+                <div id="{{form.prefix}}">
+                    {{ form.as_horizontal }}
+                    <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete
+                        form</a>
+                </div>
+                {% endfor %}
+            -->
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
             <a id="add-form" class="btn btn-success">Add form</a>
         </div>
-
-        
 
     </div>
 
