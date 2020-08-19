@@ -29,6 +29,11 @@
         const div = document.createElement('div');
         div.id = `div-${INITIAL_FORMS}`;
 
+        const deleteBtn = document.createElement('BUTTON');
+        deleteBtn.id = `btn-delete-${INITIAL_FORMS}`;
+        deleteBtn.setAttribute("class", "btn btn-danger");
+        deleteBtn.setAttribute("name", "deleteBtn");
+        deleteBtn.textContent = 'Delete form';
 
         for (const input of formInputs) {
             const new_input = input.cloneNode(true);
@@ -39,11 +44,15 @@
             div.appendChild(new_input);
             div.appendChild(hr);
         }
-
+        console.log(deleteBtn);
+        form_test.appendChild(deleteBtn);
         console.log(div);
         form_test.appendChild(div);
         INITIAL_FORMS += 1;
         total_forms_input.value = INITIAL_FORMS;
     });
 
+    /*document.getElementsByName("deleteBtn").addEventListener("click", () => {
+        alert("Brinquemos!")
+    });*/
 })();
