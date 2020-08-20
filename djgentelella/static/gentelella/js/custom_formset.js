@@ -2,8 +2,10 @@
 
     const formset_prefix = document.querySelector("#model-prefix").value;
     const formset_list = document.querySelector("#formset-list");
+    console.log(formset_list.childNodes)
     const formset_template = document.querySelector("#formset-template").innerHTML;
     const add_button = document.querySelector("#add-form");
+    const delete_buttons_list = []
 
     // Control variables
     //Formset management inputs
@@ -16,7 +18,6 @@
     //It's necessary because when the page is refreshed the total number of forms still same as the last
     const refresh_forms_number = () => {
         const forms_number = formset_list.childElementCount; //Returns the number of forms that formset_list contains
-        console.log(forms_number);
         update_management_information('reset', forms_number);
     };
 
@@ -26,7 +27,8 @@
             TOTAL_FORMS += 1;
         }
         else if (operation == 'delete') {
-            // TODO
+            TOTAL_FORMS_INPUT.value = TOTAL_FORMS - 1;
+            TOTAL_FORMS -= 1;
         }
         else if (operation == 'reset') {
             console.log("Entreee");
@@ -44,6 +46,9 @@
         const new_form = document.createElement('div');
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
+        delete_buttons_list.push(new_form.childNodes[1].lastChild.previousElementSibling)
+        console.log(delete_buttons_list);
+
         return new_form;
     };
 
@@ -60,9 +65,9 @@
             update_management_information('add');
         });
 
-        /*document.getElementsByName("deleteBtn").addEventListener("click", () => {
-            alert("Brinquemos!")
-        });*/
+        delete_form = (id) => {
+            alert("Brinquemos! "+id)
+        };
     };
 
     // ------------------------ JS initialization ------------------------

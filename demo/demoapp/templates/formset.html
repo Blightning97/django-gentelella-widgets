@@ -9,7 +9,7 @@
     <div id="formset-template" hidden>
         <div class="x_panel">
                 {{formset.empty_form.as_horizontal}}
-                <a class="btn btn-danger" id="btn-delete-{{formset.prefix}}-__prefix__">Delete Form</a>
+                <a class="btn btn-danger" id="btn-delete-{{formset.prefix}}-__prefix__" onclick="delete_form(this.id);">Delete Form</a>
         </div>
     </div>
 
@@ -24,7 +24,7 @@
                 <div id="{{form.prefix}}">
                     <div class="x_panel">
                         {{ form.as_horizontal }}
-                        <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete Form</a>
+                        <a class="btn btn-danger" id="btn-delete-{{form.prefix}}" onclick="delete_form(this.id);">Delete Form</a>
                         <hr>
                     </div>
                 </div>
