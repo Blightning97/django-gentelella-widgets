@@ -6,30 +6,31 @@
     {% csrf_token %}
 
     <input type="text" id="model-prefix" value="{{formset.prefix}}" hidden>
-    <div hidden id="formset-template">
-        {{formset.empty_form.as_horizontal}}
+    <div id="formset-template" hidden>
+        <div class="x_panel">
+                {{formset.empty_form.as_horizontal}}
+                <a class="btn btn-danger" id="btn-delete-{{formset.prefix}}-__prefix__">Delete Form</a>
+        </div>
     </div>
 
     <div class="row">
         <div id="formset-management">
             {{ formset.management_form }}
         </div>
-        
 
         <div class="col-xs-12 col-sm-12 col-md-12 container">
-
             <div id="formset-list">
                 {% for form in formset %}
                 <div id="{{form.prefix}}">
-                    {{ form.as_horizontal }}
-                    <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Deleteform</a>
-                    <hr>
+                    <div class="x_panel">
+                        {{ form.as_horizontal }}
+                        <a class="btn btn-danger" id="btn-delete-{{form.prefix}}">Delete Form</a>
+                        <hr>
+                    </div>
                 </div>
                 {% endfor %}
-           
             </div>
 
-           
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-12 text-center">
@@ -44,6 +45,8 @@
 
 
 </form>
+
+
 
 {% endblock %}
 
