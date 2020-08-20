@@ -2,10 +2,11 @@
 
     const formset_prefix = document.querySelector("#model-prefix").value;
     const formset_list = document.querySelector("#formset-list");
-    console.log(formset_list.childNodes)
+    //console.log(formset_list.childNodes)
+    const formset_list_jquery = $("#formset_list")
     const formset_template = document.querySelector("#formset-template").innerHTML;
     const add_button = document.querySelector("#add-form");
-    const delete_buttons_list = []
+    var delete_buttons_dict = {};
     const error_msj = document.querySelector("#error-msj");
 
 
@@ -44,12 +45,17 @@
         return can_add;
     };
 
+    const can_delete_forms = () => {
+        let can_delete = ((TOTAL_FORMS - 1) < MIN_NUM_FORMS) ? false : true;
+
+        return can_delete;
+    };
+
     const create_new_form = (next_form_number) => {
         const new_form = document.createElement('div');
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
-        delete_buttons_list.push(new_form.childNodes[1].lastChild.previousElementSibling)
-        console.log(delete_buttons_list);
+        delete_buttons_dict[new_form.childNodes[1].lastChild.previousElementSibling.id] = new_form.getAttribute("id");
 
         return new_form;
     };
@@ -58,6 +64,7 @@
         const new_form = create_new_form(next_form_number);
         formset_list.append(new_form);
     };
+
 
     // ------------------------ EVENTS ------------------------
     const events = () => {
@@ -74,7 +81,16 @@
         });
 
         delete_form = (id) => {
-            alert("Brinquemos! "+id)
+            if (can_delete_forms()) {
+                element = document.querySelector(`#${delete_buttons_dict[id]}`);
+                element.parentNode.removeChild(element);
+                console.log(formset_list.childNodes)
+                delete delete_buttons_dict[id];
+                update_management_information("delete");
+            }
+            else {
+                error_msj.innerHTML = `You can only have at minimum ${MIN_NUM_FORMS} forms`;
+            }
         };
     };
 
@@ -83,6 +99,9 @@
     const init = () => {
         refresh_forms_number();
         events();
+        //for i=0 < TOTAL_FORMS i++
+        //delete_buttons_dict[formset_list.childNodes] = new_form.getAttribute("id");
+        console.log(formset_list_jquery.find('input[id="'+formset_prefix+'-0"]').val())
     };
 
     init();
