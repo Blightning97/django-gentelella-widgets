@@ -6,8 +6,10 @@
     const formset_list = formset_list_div.querySelectorAll('section');
     const add_button = document.querySelector("#add-form");
     const error_msj = document.querySelector("#error-msj");
+    const forms_order = [];
     var delete_buttons_dict = {};
     let forms_added = 0;
+    let index = 0;
 
 
     // Control variables
@@ -72,6 +74,35 @@
         forms_added += 1;
     };
 
+    const register_form = (form) => {
+
+        forms_order.push({
+            'form': form,
+            'prefix': form.id,
+            'order': index,
+            'index':index,
+            'create_buttons_event': () => {
+                document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => { console.log(`down ${form.id}`); });
+                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
+                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
+                    console.log(`delete ${form.id}`);
+                    //MANAGE HERE HOW TO DELETE FORMS
+                });
+            },
+            'set_order': () => {
+                console.log(`id_${form.id}-ORDER`);
+               console.log(document.querySelector(`#id_${form.id}-ORDER`));
+            },
+        });
+
+        forms_order[index].create_buttons_event();
+        forms_order[index].set_order();
+        console.log(forms_order[index].order);
+        index++;
+
+        console.log(forms_order);
+    };
+
     // ------------------------ EVENTS ------------------------
     const events = () => {
 
@@ -112,43 +143,7 @@
 
     // --------------------- TEST ---------------------
 
-    const forms_order = [];
-    let index = 0;
-
-    const register_form = (form) => {
-        forms_order.push({
-            'form': form,
-            'prefix': form.id,
-            'index': index,
-            'create_buttons_event': () => {
-                document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => { console.log(`down ${form.id}`); });
-                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
-                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
-                    console.log(`delete ${form.id}`);
-                    //MANAGE HERE HOW TO DELETE FORMS
-                });
-            },
-        });
-
-        forms_order[index].create_buttons_event();
-        console.log(forms_order[index].index);
-        index++;
-
-        console.log(forms_order);
-    };
-
-    //Loop through each form
-    // for (const form of $("#formset-list").find('section')) {
-
-
     console.log(formset_list);
-
-    // for (const form of forms_order) {
-    //     form.create_buttons_event();
-    //     console.log(form.index);
-    // }
-
-
 
     init();
 })();
