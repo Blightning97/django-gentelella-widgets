@@ -62,7 +62,7 @@
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
         //Ask Jason what does this line do
-        delete_buttons_dict[new_form.childNodes[1].lastChild.previousElementSibling.id] = new_form.getAttribute("id");
+        //delete_buttons_dict[new_form.childNodes[1].lastChild.previousElementSibling.id] = new_form.getAttribute("id");
 
         return new_form;
     };
@@ -87,7 +87,7 @@
 
                 });
                 document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
-                document.querySelector(#btn-delete-${form.id}).addEventListener('click', () => { delete_form(${form.id}) });
+                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => { delete_form(`${form.id}`) });
             },
             'set_order': () => {
                 document.querySelector(`#id_${form.id}-ORDER`).value = index;
@@ -177,10 +177,6 @@
     };
 
     // --------------------- TEST ---------------------
-
-
-
-
 
     init();
 })();
