@@ -87,10 +87,7 @@
 
                 });
                 document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
-                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
-                    console.log(`delete ${form.id}`);
-                    //MANAGE HERE HOW TO DELETE FORMS
-                });
+                document.querySelector(#btn-delete-${form.id}).addEventListener('click', () => { delete_form(${form.id}) });
             },
             'set_order': () => {
                 document.querySelector(`#id_${form.id}-ORDER`).value = index;
@@ -147,13 +144,16 @@
                 update_management_information('add');
             }
             else {
-                error_msj.innerHTML = `You can only add ${MAX_NUM_FORMS} forms a a maximun`;
+                error_msj.innerHTML = `You can only add ${MAX_NUM_FORMS} forms a a maximum`;
             }
 
         });
 
         delete_form = (id) => {
-            if (can_delete_forms()) {
+            //form = forms_order.filter(form => form.prefix == prefix)[0];
+            //alert(form)
+            alert(id)
+            /*if (can_delete_forms()) {
                 element = document.querySelector(`#${delete_buttons_dict[id]}`);
                 element.parentNode.removeChild(element);
                 console.log(formset_list_div.childNodes)
@@ -162,7 +162,7 @@
             }
             else {
                 error_msj.innerHTML = `You can only have at minimum ${MIN_NUM_FORMS} forms`;
-            }
+            }*/
         };
     };
 
