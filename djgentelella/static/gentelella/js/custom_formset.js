@@ -1,11 +1,12 @@
 (() => {
 
     const formset_prefix = document.querySelector("#model-prefix").value;
-    const formset_list = document.querySelector("#formset-list");
     const formset_template = document.querySelector("#formset-template").innerHTML;
+    const formset_list_div = document.querySelector("#formset-list");
+    const formset_list = formset_list_div.querySelectorAll('section');
     const add_button = document.querySelector("#add-form");
-    var delete_buttons_dict = {};
     const error_msj = document.querySelector("#error-msj");
+    var delete_buttons_dict = {};
     let forms_added = 0;
 
 
@@ -18,9 +19,12 @@
     // ------------------------ FUNCTIONS ------------------------
 
     //It's necessary because when the page is refreshed the total number of forms still same as the last
-    const refresh_forms_number = () => {
-        const forms_number = formset_list.childElementCount; //Returns the number of forms that formset_list contains
+    const init_start_data = () => {
+        const forms_number = formset_list.length;
         update_management_information('reset', forms_number);
+        for (const form of formset_list) {
+            register_form(form);
+        }
     };
 
     const update_management_information = (operation, current_number = 0) => {
@@ -63,10 +67,11 @@
 
     const add_new_form = (next_form_number) => {
         const new_form = create_new_form(next_form_number);
-        formset_list.append(new_form);
+        formset_list_div.append(new_form);
+        register_form(new_form);
         forms_added += 1;
     };
-  
+
     // ------------------------ EVENTS ------------------------
     const events = () => {
 
@@ -85,7 +90,7 @@
             if (can_delete_forms()) {
                 element = document.querySelector(`#${delete_buttons_dict[id]}`);
                 element.parentNode.removeChild(element);
-                console.log(formset_list.childNodes)
+                console.log(formset_list_div.childNodes)
                 delete delete_buttons_dict[id];
                 update_management_information("delete");
             }
@@ -98,11 +103,11 @@
     // ------------------------ JS initialization ------------------------
 
     const init = () => {
-        refresh_forms_number();
+        init_start_data();
         events();
         //for i=0 < TOTAL_FORMS i++
-        //delete_buttons_dict[formset_list.childNodes] = new_form.getAttribute("id");
-        // console.log(formset_list_jquery.find('input[id="'+formset_prefix+'-0"]').val())
+        //delete_buttons_dict[formset_list_div.childNodes] = new_form.getAttribute("id");
+        // console.log(formset_list_div_jquery.find('input[id="'+formset_prefix+'-0"]').val())
     };
 
     // --------------------- TEST ---------------------
@@ -110,32 +115,40 @@
     const forms_order = [];
     let index = 0;
 
-    //Loop through each form
-    for (const form of $("#formset-list").find('section')) {
-
+    const register_form = (form) => {
         forms_order.push({
-
+            'form': form,
             'prefix': form.id,
             'index': index,
             'create_buttons_event': () => {
                 document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => { console.log(`down ${form.id}`); });
                 document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
-                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => { 
-                    console.log(`delete ${form.id}`); 
+                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
+                    console.log(`delete ${form.id}`);
                     //MANAGE HERE HOW TO DELETE FORMS
                 });
             },
         });
 
+        forms_order[index].create_buttons_event();
+        console.log(forms_order[index].index);
         index++;
-    }
 
-    for (const form of forms_order) {
-        form.create_buttons_event();
-        console.log(form.index);
-    }
+        console.log(forms_order);
+    };
 
-    
+    //Loop through each form
+    // for (const form of $("#formset-list").find('section')) {
+
+
+    console.log(formset_list);
+
+    // for (const form of forms_order) {
+    //     form.create_buttons_event();
+    //     console.log(form.index);
+    // }
+
+
 
     init();
 })();
