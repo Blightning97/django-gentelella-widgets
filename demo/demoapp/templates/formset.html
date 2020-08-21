@@ -4,18 +4,21 @@
 
 <form method="post" id="form-test">
     {% csrf_token %}
-
     <input type="text" id="model-prefix" value="{{formset.prefix}}" hidden>
     <div id="formset-template" hidden>
         <div class="x_panel">
             <div class="col-xs-12 col-sm-12 col-md-12">
+                {% if formset.can_order %}
                 <ul class="nav navbar-right panel_toolbox">
                     <a class="btn btn-success" id="btn-down-{{formset.prefix}}-__prefix__">Down</a>
                     <a class="btn btn-success" id="btn-up-{{formset.prefix}}-__prefix__" >Up</a>
                 </ul>
+                {% endif %}
             </div>
             {{formset.empty_form.as_horizontal}}
-            <a class="btn btn-danger" id="btn-delete-{{formset.prefix}}-__prefix__" onclick="delete_form(this.id);">Delete Form</a>
+            {% if formset.can_delete %}
+                <a class="btn btn-danger" id="btn-delete-{{formset.prefix}}-__prefix__" onclick="delete_form(this.id);">Delete Form</a>
+            {% endif %}
         </div>
     </div>
 
@@ -28,17 +31,7 @@
             <div id="formset-list">
                 {% for form in formset %}
                 <div id="{{form.prefix}}">
-                    <div class="x_panel">
-                        <div class="col-xs-12 col-sm-12 col-md-12">
-                            <ul class="nav navbar-right panel_toolbox">
-                                <a class="btn btn-success" id="btn-down-{{formset.prefix}}-__prefix__">Down</a>
-                                <a class="btn btn-success" id="btn-up-{{formset.prefix}}-__prefix__" >Up</a>
-                            </ul>
-                        </div>
-                        {{ form.as_horizontal }}
-                        <a class="btn btn-danger" id="btn-delete-{{form.prefix}}" onclick="delete_form(this.id);">Delete Form</a>
-                        <hr>
-                    </div>
+                    {% include 'formset_form.html' %}
                 </div>
                 {% endfor %}
             </div>

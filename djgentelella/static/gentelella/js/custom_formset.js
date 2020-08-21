@@ -8,6 +8,7 @@
     const add_button = document.querySelector("#add-form");
     var delete_buttons_dict = {};
     const error_msj = document.querySelector("#error-msj");
+    let forms_added = 0;
 
 
     // Control variables
@@ -36,6 +37,7 @@
         else if (operation == 'reset') {
             TOTAL_FORMS_INPUT.value = current_number;
             TOTAL_FORMS = current_number;
+            forms_added = current_number;
         }
     };
 
@@ -55,6 +57,7 @@
         const new_form = document.createElement('div');
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
+        //Ask Jason what does this line do
         delete_buttons_dict[new_form.childNodes[1].lastChild.previousElementSibling.id] = new_form.getAttribute("id");
 
         return new_form;
@@ -63,6 +66,8 @@
     const add_new_form = (next_form_number) => {
         const new_form = create_new_form(next_form_number);
         formset_list.append(new_form);
+        forms_added += 1;
+        
     };
 
 
@@ -71,11 +76,11 @@
 
         add_button.addEventListener('click', () => {
             if (can_add_forms()) {
-                add_new_form(TOTAL_FORMS);
+                add_new_form(forms_added); //BEFORE HERE WAS TOTAL_FORMS AS A PARAMETER
                 update_management_information('add');
             }
             else {
-                error_msj.innerHTML = `You can add only ${MAX_NUM_FORMS} forms`;
+                error_msj.innerHTML = `You can only add ${MAX_NUM_FORMS} forms a a maximun`;
             }
 
         });
@@ -101,7 +106,7 @@
         events();
         //for i=0 < TOTAL_FORMS i++
         //delete_buttons_dict[formset_list.childNodes] = new_form.getAttribute("id");
-        console.log(formset_list_jquery.find('input[id="'+formset_prefix+'-0"]').val())
+        // console.log(formset_list_jquery.find('input[id="'+formset_prefix+'-0"]').val())
     };
 
     init();

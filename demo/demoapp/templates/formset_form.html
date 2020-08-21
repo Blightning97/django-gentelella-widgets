@@ -1,0 +1,15 @@
+<div class="x_panel">
+    <div class="col-xs-12 col-sm-12 col-md-12">
+        {% if formset.can_order %}
+        <ul class="nav navbar-right panel_toolbox">
+            <a class="btn btn-success" id="btn-down-{{formset.prefix}}-__prefix__">Down</a>
+            <a class="btn btn-success" id="btn-up-{{formset.prefix}}-__prefix__">Up</a>
+        </ul>
+        {% endif %}
+    </div>
+    {{ form.as_horizontal }}
+    {% if formset.can_delete %}
+    <a class="btn btn-danger" id="btn-delete-{{form.prefix}}" onclick="delete_form(this.id);">Delete Form</a>
+    {% endif %}
+    <hr>
+</div>
