@@ -2,8 +2,6 @@
 
     const formset_prefix = document.querySelector("#model-prefix").value;
     const formset_list = document.querySelector("#formset-list");
-    //console.log(formset_list.childNodes)
-    const formset_list_jquery = $("#formset_list")
     const formset_template = document.querySelector("#formset-template").innerHTML;
     const add_button = document.querySelector("#add-form");
     var delete_buttons_dict = {};
@@ -54,7 +52,7 @@
     };
 
     const create_new_form = (next_form_number) => {
-        const new_form = document.createElement('div');
+        const new_form = document.createElement('section');
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
         //Ask Jason what does this line do
@@ -67,10 +65,8 @@
         const new_form = create_new_form(next_form_number);
         formset_list.append(new_form);
         forms_added += 1;
-        
     };
-
-
+  
     // ------------------------ EVENTS ------------------------
     const events = () => {
 
@@ -108,6 +104,38 @@
         //delete_buttons_dict[formset_list.childNodes] = new_form.getAttribute("id");
         // console.log(formset_list_jquery.find('input[id="'+formset_prefix+'-0"]').val())
     };
+
+    // --------------------- TEST ---------------------
+
+    const forms_order = [];
+    let index = 0;
+
+    //Loop through each form
+    for (const form of $("#formset-list").find('section')) {
+
+        forms_order.push({
+
+            'prefix': form.id,
+            'index': index,
+            'create_buttons_event': () => {
+                document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => { console.log(`down ${form.id}`); });
+                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
+                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => { 
+                    console.log(`delete ${form.id}`); 
+                    //MANAGE HERE HOW TO DELETE FORMS
+                });
+            },
+        });
+
+        index++;
+    }
+
+    for (const form of forms_order) {
+        form.create_buttons_event();
+        console.log(form.index);
+    }
+
+    
 
     init();
 })();
