@@ -79,10 +79,13 @@
         forms_order.push({
             'form': form,
             'prefix': form.id,
+            'index': index,
             'order': index,
-            'index':index,
             'create_buttons_event': () => {
-                document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => { console.log(`down ${form.id}`); });
+                document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => {
+                    switch_form(form.id);
+
+                });
                 document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
                 document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
                     console.log(`delete ${form.id}`);
@@ -90,17 +93,49 @@
                 });
             },
             'set_order': () => {
-                console.log(`id_${form.id}-ORDER`);
-               console.log(document.querySelector(`#id_${form.id}-ORDER`));
+                document.querySelector(`#id_${form.id}-ORDER`).value = index;
             },
+
         });
 
         forms_order[index].create_buttons_event();
         forms_order[index].set_order();
-        console.log(forms_order[index].order);
         index++;
+    };
 
-        console.log(forms_order);
+    const switch_form = (prefix) => {
+        const form = forms_order.filter(form => form.prefix == prefix)[0];
+        const brother = (form.order < forms_order.length) ? forms_order[form.order + 1] : null;
+        if (brother) {
+            insert_form_before(form.form, brother.form);
+            brother.order -= 1;
+            form.order += 1;
+            forms_order.sort(sort_forms);
+
+        }
+    };
+
+    const insert_form_before = (current_form, next_form) => {
+        const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
+        const next_form_order_input = document.querySelector(`#id_${next_form.id}-ORDER`);
+        const next_value = parseInt(current_form_order_input.value) + 1;
+        const current_value = parseInt(next_form_order_input.value) - 1;
+
+        current_form_order_input.value = next_value;
+        next_form_order_input.value = current_value;
+
+        current_form.parentNode.insertBefore(next_form, current_form);
+
+    };
+
+    const sort_forms = (form_a, form_b) => {
+        if (form_a.order < form_b.order) {
+            return -1;
+        }
+        if (form_a.order > form_b.order) {
+            return 1;
+        }
+        return 0;
     };
 
     // ------------------------ EVENTS ------------------------
@@ -143,7 +178,9 @@
 
     // --------------------- TEST ---------------------
 
-    console.log(formset_list);
+
+
+
 
     init();
 })();
