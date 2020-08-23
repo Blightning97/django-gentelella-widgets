@@ -91,11 +91,9 @@
             },
 
         });
-        console.log("Index: "+index)
         forms_order[index].create_buttons_event();
         forms_order[index].set_order();
         index++;
-        console.log(forms_order)
     };
 
     const switch_form = (prefix) => {
@@ -133,15 +131,16 @@
         return 0;
     };
 
-    const update_order = () => {
+    const update_order = (id) => {
         i = 0;
+        index = TOTAL_FORMS
         forms_order.forEach(function(){
             const form = forms_order[i]
             form.order = i;
+            const current_form_order_input = document.querySelector(`#id_${form.form.id}-ORDER`);
+            current_form_order_input.value = i
             i++;
         })
-        console.log("Despues")
-        console.log(forms_order)
     };
 
     // ------------------------ EVENTS ------------------------
@@ -160,17 +159,18 @@
 
         delete_form = (id) => {
             if (can_delete_forms()) {
-                console.log(id)
-                form = forms_order.filter(form => form.prefix == id);
-                console.log(form)
-                console.log(forms_order)
-                forms_order.splice(form, 1);
-                console.log(forms_order)
                 element = document.querySelector(`#${id}`);
-                console.log(element)
                 element.parentNode.removeChild(element);
+                i = 0;
+                forms_order.forEach(function(form){
+                    if (element.id == form.prefix)
+                    {
+                        forms_order.splice(i, 1);
+                    }
+                    i++;
+                })
                 update_management_information("delete");
-                update_order();
+                update_order(id);
             }
             else {
                 error_msj.innerHTML = `You can only have at minimum ${MIN_NUM_FORMS} forms`;
