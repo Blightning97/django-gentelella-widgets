@@ -7,7 +7,6 @@
     const add_button = document.querySelector("#add-form");
     const error_msj = document.querySelector("#error-msj");
     const forms_order = [];
-    var delete_buttons_dict = {};
     let forms_added = 0;
     let index = 0;
 
@@ -61,8 +60,6 @@
         const new_form = document.createElement('section');
         new_form.setAttribute("id", `${formset_prefix}-${next_form_number}`);
         new_form.innerHTML = formset_template.replace(/__prefix__/gi, next_form_number);
-        //Ask Jason what does this line do
-        //delete_buttons_dict[new_form.childNodes[1].lastChild.previousElementSibling.id] = new_form.getAttribute("id");
 
         return new_form;
     };
@@ -75,7 +72,7 @@
     };
 
     const register_form = (form) => {
-
+        btn_name = document.querySelector(`#btn-delete-${form.id}`)
         forms_order.push({
             'form': form,
             'prefix': form.id,
@@ -94,10 +91,11 @@
             },
 
         });
-
+        console.log("Index: "+index)
         forms_order[index].create_buttons_event();
         forms_order[index].set_order();
         index++;
+        console.log(forms_order)
     };
 
     const switch_form = (prefix) => {
@@ -135,6 +133,17 @@
         return 0;
     };
 
+    const update_order = () => {
+        i = 0;
+        forms_order.forEach(function(){
+            const form = forms_order[i]
+            form.order = i;
+            i++;
+        })
+        console.log("Despues")
+        console.log(forms_order)
+    };
+
     // ------------------------ EVENTS ------------------------
     const events = () => {
 
@@ -150,19 +159,22 @@
         });
 
         delete_form = (id) => {
-            //form = forms_order.filter(form => form.prefix == prefix)[0];
-            //alert(form)
-            alert(id)
-            /*if (can_delete_forms()) {
-                element = document.querySelector(`#${delete_buttons_dict[id]}`);
+            if (can_delete_forms()) {
+                console.log(id)
+                form = forms_order.filter(form => form.prefix == id);
+                console.log(form)
+                console.log(forms_order)
+                forms_order.splice(form, 1);
+                console.log(forms_order)
+                element = document.querySelector(`#${id}`);
+                console.log(element)
                 element.parentNode.removeChild(element);
-                console.log(formset_list_div.childNodes)
-                delete delete_buttons_dict[id];
                 update_management_information("delete");
+                update_order();
             }
             else {
                 error_msj.innerHTML = `You can only have at minimum ${MIN_NUM_FORMS} forms`;
-            }*/
+            }
         };
     };
 
@@ -171,9 +183,6 @@
     const init = () => {
         init_start_data();
         events();
-        //for i=0 < TOTAL_FORMS i++
-        //delete_buttons_dict[formset_list_div.childNodes] = new_form.getAttribute("id");
-        // console.log(formset_list_div_jquery.find('input[id="'+formset_prefix+'-0"]').val())
     };
 
     // --------------------- TEST ---------------------
