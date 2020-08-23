@@ -80,10 +80,10 @@
             'order': index,
             'create_buttons_event': () => {
                 document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => {
-                    switch_form(form.id);
+                    switch_form(form.id, "down");
 
                 });
-                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { console.log(`up ${form.id}`); });
+                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { switch_form(form.id, "up"); });
                 document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => { delete_form(`${form.id}`) });
             },
             'set_order': () => {
@@ -96,29 +96,58 @@
         index++;
     };
 
-    const switch_form = (prefix) => {
+    const switch_form = (prefix, move_order) => {
         const form = forms_order.filter(form => form.prefix == prefix)[0];
-        const brother = (form.order < forms_order.length) ? forms_order[form.order + 1] : null;
-        if (brother) {
-            insert_form_before(form.form, brother.form);
-            brother.order -= 1;
-            form.order += 1;
-            forms_order.sort(sort_forms);
+        if (move_order == "up")
+        {
+            console.log("UP!")
+            const brother = (form.order > 0) ? forms_order[form.order - 1] : null;
+            if (brother) {
+                move_forms(form.form, brother.form, move_order);
+                brother.order += 1;
+                form.order -= 1;
+                forms_order.sort(sort_forms);
+            }
 
+        }
+        else if (move_order == "down")
+        {
+            console.log("DOWN!")
+            const brother = (form.order < forms_order.length) ? forms_order[form.order + 1] : null;
+            if (brother) {
+                move_forms(form.form, brother.form, move_order);
+                brother.order -= 1;
+                form.order += 1;
+                forms_order.sort(sort_forms);
+            }
         }
     };
 
-    const insert_form_before = (current_form, next_form) => {
-        const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
-        const next_form_order_input = document.querySelector(`#id_${next_form.id}-ORDER`);
-        const next_value = parseInt(current_form_order_input.value) + 1;
-        const current_value = parseInt(next_form_order_input.value) - 1;
+    const move_forms = (current_form, brother_form, move_order) => {
+        if (move_order == "up")
+        {
+            const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
+            const brother_form_order_input = document.querySelector(`#id_${brother_form.id}-ORDER`);
+            const brother_value = parseInt(current_form_order_input.value) - 1;
+            const current_value = parseInt(brother_form_order_input.value) + 1;
 
-        current_form_order_input.value = next_value;
-        next_form_order_input.value = current_value;
+            current_form_order_input.value = brother_value;
+            brother_form_order_input.value = current_value;
 
-        current_form.parentNode.insertBefore(next_form, current_form);
+            current_form.parentNode.insertBefore(current_form, brother_form);
+        }
+        else if (move_order == "down")
+        {
+            const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
+            const brother_form_order_input = document.querySelector(`#id_${brother_form.id}-ORDER`);
+            const brother_value = parseInt(current_form_order_input.value) + 1;
+            const current_value = parseInt(brother_form_order_input.value) - 1;
 
+            current_form_order_input.value = brother_value;
+            brother_form_order_input.value = current_value;
+
+            current_form.parentNode.insertBefore(brother_form, current_form);
+        }
     };
 
     const sort_forms = (form_a, form_b) => {
