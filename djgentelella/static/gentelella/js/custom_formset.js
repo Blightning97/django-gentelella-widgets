@@ -81,10 +81,13 @@
             'create_buttons_event': () => {
                 document.querySelector(`#btn-down-${form.id}`).addEventListener('click', () => {
                     switch_form(form.id, "down");
-
                 });
-                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => { switch_form(form.id, "up"); });
-                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => { delete_form(`${form.id}`) });
+                document.querySelector(`#btn-up-${form.id}`).addEventListener('click', () => {
+                    switch_form(form.id, "up");
+                });
+                document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
+                    delete_form(`${form.id}`) 
+                });
             },
             'set_order': () => {
                 document.querySelector(`#id_${form.id}-ORDER`).value = index;
@@ -100,7 +103,6 @@
         const form = forms_order.filter(form => form.prefix == prefix)[0];
         if (move_order == "up")
         {
-            console.log("UP!")
             const brother = (form.order > 0) ? forms_order[form.order - 1] : null;
             if (brother) {
                 move_forms(form.form, brother.form, move_order);
@@ -112,7 +114,6 @@
         }
         else if (move_order == "down")
         {
-            console.log("DOWN!")
             const brother = (form.order < forms_order.length) ? forms_order[form.order + 1] : null;
             if (brother) {
                 move_forms(form.form, brother.form, move_order);
