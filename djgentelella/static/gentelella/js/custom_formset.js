@@ -86,7 +86,7 @@
                     switch_form(form.id, "up");
                 });
                 document.querySelector(`#btn-delete-${form.id}`).addEventListener('click', () => {
-                    delete_form(`${form.id}`) 
+                    delete_form(`${form.id}`)
                 });
             },
             'set_order': () => {
@@ -108,7 +108,6 @@
                 move_forms(form.form, brother.form, move_order);
                 brother.order += 1;
                 form.order -= 1;
-                forms_order.sort(sort_forms);
             }
 
         }
@@ -119,16 +118,16 @@
                 move_forms(form.form, brother.form, move_order);
                 brother.order -= 1;
                 form.order += 1;
-                forms_order.sort(sort_forms);
             }
         }
+        forms_order.sort(sort_forms);
     };
 
     const move_forms = (current_form, brother_form, move_order) => {
+        const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
+        const brother_form_order_input = document.querySelector(`#id_${brother_form.id}-ORDER`);
         if (move_order == "up")
         {
-            const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
-            const brother_form_order_input = document.querySelector(`#id_${brother_form.id}-ORDER`);
             const brother_value = parseInt(current_form_order_input.value) - 1;
             const current_value = parseInt(brother_form_order_input.value) + 1;
 
@@ -139,8 +138,6 @@
         }
         else if (move_order == "down")
         {
-            const current_form_order_input = document.querySelector(`#id_${current_form.id}-ORDER`);
-            const brother_form_order_input = document.querySelector(`#id_${brother_form.id}-ORDER`);
             const brother_value = parseInt(current_form_order_input.value) + 1;
             const current_value = parseInt(brother_form_order_input.value) - 1;
 
